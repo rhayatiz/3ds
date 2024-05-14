@@ -1,34 +1,30 @@
-import { Box, Button, Checkbox, Divider, Flex, PasswordInput, Select, Text, TextInput } from "@mantine/core";
+import { Box, Button, Checkbox, Divider, Flex, Modal, PasswordInput, Select, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { Link, router } from "@inertiajs/react";
+import { useDisclosure } from "@mantine/hooks";
 
-export default function FormulaireInscription() {
-    const organisationType = [
-        {
-            label: "Administrations publiques",
-            value: 1
-        },
-        {
-            label: "Associations",
-            value: 2
-        },
-        {
-            label: "Cabinets de conseil",
-            value: 3
-        },
-    ]
+export default function FormulaireInscription({context}) {
+    const organisationTypes = context.organisationTypes.data
+    const secteursActivite = context.secteursActivite.data
+    const { errors } = context
+    
+    const [opened, { open, close }] = useDisclosure(false);
+
     const form = useForm({
           initialValues: {
-            prenom: '',
-            nom: '',
-            email: '',
-            telephone: '',
-            fonction: '',
-            organisation: '',
-            typeOrganisation: '',
-            secteurActivite: '',
+            prenom: 'don',
+            nom: 'joe',
+            email: 'admin@example.com',
+            telephone: '0123123123',
+            fonction: 'dev',
+            organisation: 'aaa',
+            organisation_type_id: '',
+            secteur_activite_id: '',
             participation: false,
-            marketing: false,
-            newsletter: false,
+            has_agreed_commercial_use: false,
+            is_subscribed_newsletter: false,
+            password: '123',
+            passwordConfirm: '123',
           },
       
           validate: {
@@ -54,12 +50,22 @@ export default function FormulaireInscription() {
           },
     });
 
-    const handleSubmit = (values) => {
-        console.log('values', values)
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        form.validate()
+        if (form.isValid()) {
+            router.post('/inscription', form.values, {
+                preserveScroll: true,
+                onSuccess: () => {
+                    form.reset()
+                    open()
+                }
+            })
+        }
     }
 
     return (
-        <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
+        <form onSubmit={handleSubmit}>
             <Text className="font-semibold text-blue-900 mt-6">Informations Personnelles</Text>
             <Box className="flex flex-col md:flex-row justify-between md:space-x-6">
                 <TextInput w={'100%'} mt={'md'}
@@ -114,14 +120,14 @@ export default function FormulaireInscription() {
                 <Select w={'100%'} mt={'md'}
                     label="Type d'organisation"
                     placeholder="Type d'organisation"
-                    data={organisationType}
-                    {...form.getInputProps('secteurActivite')} 
+                    data={secteursActivite}
+                    {...form.getInputProps('secteur_activite_id')} 
                     />
                 <Select w={'100%'} mt={'md'}
                     label="Secteur d'activité"
                     placeholder="Secteur d'activité"
-                    data={organisationType}
-                    {...form.getInputProps('typeOrganisation')} 
+                    data={organisationTypes}
+                    {...form.getInputProps('organisation_type_id')} 
                     />
             </Box>
 
@@ -156,7 +162,7 @@ export default function FormulaireInscription() {
                 size={"xs"}
                 mt="md"
                 label="J'accepte que les données renseignées sur ce formulaire soient communiquées aux partenaires de OUTSCALE pour OUTSCALE EXPERIENCES dans le but de recevoir les communications commerciales et marketing de ces partenaires, ces données seront partagées avec les équipes marketing et commerciales des partenaires, vous pourrez à tout moment vous désabonner de ces communications. Vous pouvez accéder aux données vous concernant, les rectifier, demander leur effacement ou exercer votre droit à la limitation du traitement de vos données. Pour plus d'informations concernant le traitement de vos données personnelles, nous vous invitons à lire notre politique de protection des données."
-                {...form.getInputProps('marketing', { type: 'checkbox' })}
+                {...form.getInputProps('has_agreed_commercial_use', { type: 'checkbox' })}
                 />
 
 
@@ -166,13 +172,22 @@ export default function FormulaireInscription() {
                 label="J’accepte qu'OUTSCALE me communique sa newsletter.
                 Votre adresse de messagerie est uniquement utilisée pour vous envoyer notre newsletter ainsi que des informations concernant les activités d'OUTSCALE. Vous pouvez à tout moment utiliser le lien de désabonnement intégré dans la newsletter.
                 Pour plus d'informations concernant le traitement de vos données personnelles, nous vous invitons à lire [notre politique de protection des données|https://fr.outscale.com/cgucgv/]."
-                {...form.getInputProps('newsletter', { type: 'checkbox' })}
+                {...form.getInputProps('is_subscribed_newsletter', { type: 'checkbox' })}
                 />
 
-
+            {Object.keys(errors).length !== 0 && <Box  className="bg-red-100/50 rounded-lg my-5 p-2">
+                {Object.keys(errors).map((keyName, i) => (
+                    <Text color="red" fz={'xs'} key={i}>{errors[keyName]}</Text>
+                ))}
+            </Box>}
             <Flex className="mb-20" justify={'center'} mt={'xl'} >
                 <Button size="lg" className="bg-blue-800 hover:bg-blue-950 text-white uppercase px-10" type="submit">Valider mon inscription</Button>
             </Flex>
+
+            <Modal opened={opened} onClose={close} title="Succès">
+                <Text justify='center'>Votre inscription à bien été prise en compte.</Text>
+                <Link className="justify-center" href="/inscription/all">Voir les inscriptions</Link>
+            </Modal>
         </form>
     )
 }

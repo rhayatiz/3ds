@@ -37,7 +37,7 @@ export default function LandingLeftColumn({className, scrollToInscription}) {
         <iframe width="100%" height="315" src="https://www.youtube.com/embed/NNGDj9IeAuI?si=tzrL5fta7HZzF4ez" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </Box>
 
-        <Text color='dimmed' align='justify' weight={300} mt={'md'}>
+        <Text align='justify' weight={300} mt={'md'}>
         Lors d’OUTSCALE EXPERIENCES 2024, rencontrez nos équipes d’experts et tout notre écosystème et mettez la puissance de l’IA au service de la modernisation de vos processus, dans le but d’apprendre à vos équipes à prendre des décisions éclairées, ou encore d’automatiser les tâches les plus complexes tout en préservant la souveraineté et la sécurité de vos données les plus sensibles. 
         </Text>
 

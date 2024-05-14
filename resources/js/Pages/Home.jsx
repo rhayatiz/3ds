@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Image, Title, Text, Space, Group, Stack, Avatar, Overlay, BackgroundImage, Anchor } from '@mantine/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Background from '../../images/background.png'
 import OutscaleExperienceLogo from '../../images/outscale-experience-logo-white.png'
 import OutscaleLogo from '../../images/3ds-outscale-logo.svg'
@@ -11,9 +11,10 @@ import LandingRightColumn from '../Components/LandingRightColumn';
 import SectionTitle from '../Components/SectionTitle';
 import TimeCard from '../Components/TimeCard';
 import PartnersRow from '../Components/PartnersRow';
-import { Head } from '@inertiajs/inertia-react';
 import FormulaireInscription from '../Components/FormulaireInscription';
 import { useScrollIntoView } from '@mantine/hooks';
+import { Head, usePage } from '@inertiajs/react';
+
 
 const Home = () => {
     const { scrollIntoView, targetRef } = useScrollIntoView({
@@ -91,7 +92,7 @@ const Home = () => {
 
                     <Box ref={targetRef}>
                         <SectionTitle title={'Inscription'} />
-                        <FormulaireInscription />
+                        <FormulaireInscription context={usePage().props} />
                     </Box>
 
                     <Box className="bg-blue-200/80 rounded-lg py-2 mb-3 text-center my-14">
