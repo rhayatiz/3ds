@@ -1,6 +1,6 @@
 ##### Requirements
 - php 8.0.2+
-- composer
+- composer 2.5.8+
 - node 16.20.2+
 - mysql
 
