@@ -26,7 +26,7 @@ class InscriptionController extends Controller
         $inscriptions = new InscriptionCollection(Inscription::all());
 
         return Inertia::render('Inscriptions', [
-            'inscriptions' => []
+            'inscriptions' => $inscriptions
         ]);
     }
 }
