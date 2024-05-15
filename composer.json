@@ -1,7 +1,8 @@
 {
-    "name": "laravel/laravel",
+    "name": "rhayatiz/3ds",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "version": "1.0.0",
+    "description": "Inertia Laravel project.",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {

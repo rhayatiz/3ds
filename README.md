@@ -1,7 +1,7 @@
 ##### Requirements
 - php 8.0.2+
 - composer
-- npm
+- node 16.20.2+
 - mysql
 
 
